@@ -1,0 +1,162 @@
+import java.util.*;
+
+class Book {
+    private String title;
+    private String author;
+    private boolean status;
+
+    public Book(String title, String author) {
+        this.title = title;
+        this.author = author;
+        this.status = false;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public boolean isCheckedOut() {
+        return status;
+    }
+
+    public void setCheckedOut(boolean checkedOut) {
+        this.status = checkedOut;
+    }
+}
+
+class Catalog {
+    private ArrayList<Book> ListOfbooks;
+
+    public Catalog() {
+        this.ListOfbooks = new ArrayList<>();
+    }
+
+    public void addBook(String title, String author) {
+        Book newBook = new Book(title, author);
+        ListOfbooks.add(newBook);
+        System.out.println("Book added: " + newBook.getTitle());
+    }
+
+
+    public void searchByTitle(String title) {
+        for (Book book : ListOfbooks) {
+            if (book.getTitle().equalsIgnoreCase(title)) {
+                System.out.println("Book found: " + book.getTitle() + " by " + book.getAuthor());
+                return;
+            }
+        }
+        System.out.println("Book with title '" + title + "' not found.");
+    }
+
+    public void searchByAuthor(String author) {
+        for (Book book : ListOfbooks) {
+            if (book.getAuthor().equalsIgnoreCase(author)) {
+                System.out.println("Book found: " + book.getTitle() + " by " + book.getAuthor());
+                return;
+            }
+        }
+        System.out.println("Book by author '" + author + "' not found.");
+    }
+
+    public void checkOutBook(String title) {
+        for (Book book : ListOfbooks) {
+            if (book.getTitle().equalsIgnoreCase(title)) {
+                if (!book.isCheckedOut()) {
+                    book.setCheckedOut(true);
+                    System.out.println("Successfully checked out: " + book.getTitle());
+                    return;
+                } else {
+                    System.out.println("Book '" + book.getTitle() + "' is already checked out.");
+                    return;
+                }
+            }
+        }
+        System.out.println("Book with title '" + title + "' not found.");
+    }
+
+    public void returnBook(String title) {
+        for (Book book : ListOfbooks) {
+            if (book.getTitle().equalsIgnoreCase(title)) {
+                if (book.isCheckedOut()) {
+                    book.setCheckedOut(false);
+                    System.out.println("Successfully returned: " + book.getTitle());
+                    return;
+                } else {
+                    System.out.println("Book '" + book.getTitle() + "' is already available.");
+                    return;
+                }
+            }
+        }
+        System.out.println("Book with title '" + title + "' not found.");
+    }
+}
+
+public class LibrarySystem {
+    public static void main(String[] args) {
+        Catalog library = new Catalog();
+
+        Scanner sc=new Scanner(System.in);
+        int choice;
+        do {
+            System.out.println("Library Catalog System");
+            System.out.println("1. Add Book");
+            System.out.println("2. Search by Title");
+            System.out.println("3. Search by Author");
+            System.out.println("4. Check Out Book");
+            System.out.println("5. Return Book");
+            System.out.println("0. Exit");
+            System.out.print("Enter your choice: ");
+            choice = sc.nextInt();
+            sc.nextLine();  // Consume newline character
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter book title: ");
+                    String addTitle = sc.nextLine();
+                    System.out.print("Enter author name: ");
+                    String addAuthor = sc.nextLine();
+                    library.addBook(addTitle, addAuthor);
+                    break;
+
+                case 2:
+                    System.out.print("Enter book title to search: ");
+                    String searchTitle = sc.nextLine();
+                    library.searchByTitle(searchTitle);
+                    break;
+
+                case 3:
+                    System.out.print("Enter author name to search: ");
+                    String searchAuthor = sc.nextLine();
+                    library.searchByAuthor(searchAuthor);
+                    break;
+
+                case 4:
+                    System.out.print("Enter book title to check out: ");
+                    String checkOutTitle = sc.nextLine();
+                    library.checkOutBook(checkOutTitle);
+                    break;
+
+                case 5:
+                    System.out.print("Enter book title to return: ");
+                    String returnTitle = sc.nextLine();
+                    library.returnBook(returnTitle);
+                    break;
+
+                case 0:
+                    System.out.println("Exiting Library Catalog System. Goodbye!");
+                    break;
+
+                default:
+                    System.out.println("Invalid choice. Please enter a valid option.");
+                    break;
+                
+            }
+            System.out.println();
+
+        } while (choice != 0);
+    }
+}
